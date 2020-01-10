@@ -1,0 +1,134 @@
+---
+title: "Unit 3 Homework"
+author: "Answer Key"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1. Processing Pasta
+A certain manufacturing process creates pieces of pasta that vary by length. Suppose that the length of a particular piece, L, is a continuous random variable with the following probability density function.
+
+f(l) = $\begin{cases}
+0,  l  \leq 0 \\
+\frac{l}{2}, 0 < l  \leq 2 \\
+0, 2 < l \\
+\end{cases}$
+
+(a) Write down a complete expression for the cumulative probability function of L.
+
+$F(l) = \int_{\bar{l}=-\infty}^{l} f(\bar{l}) d\bar{l}$
+
+Notice that we needed a new variable to integrate over.  The integrand is only positive between 0 and 2, so we already know F will be zero below this interval and 1 above this interval.  
+
+When $0 < l < 2$, we have 
+
+$F(l) = \int_{\bar{l}=-\infty}^{0} 0 d\bar{l} + \int_{\bar{l}=0}^{l} \frac{\bar{l}}{2} d\bar{l} = 0 + \frac{\bar{l}^2}{4}\bigg|_0^l= \frac{l^2}{4}$
+
+Putting these together, we have the complete expression,
+
+$F(l) = \begin{cases}
+0,  l \leq 0 \\
+\frac{l^{2}}{4}, 0 < l < 2\\
+1, 2 \leq l \\
+\end{cases}$
+
+(b) Using the definition of expectation for a continuous random variable, compute the expected length of the pasta, E(L).
+
+Although some people will skip this step, I strongly recommend that you start your expression for expectation properly, by integrating all the way from $-\infty$ to $\infty$.
+
+$$E(L) = \int_{-\infty}^{\infty} l\cdot f(l)dl = \int_{-\infty}^{0} l \cdot 0 dl + \int_{0}^{2} l \cdot \frac{l}{2} dl + \int_{2}^{\infty} l\cdot 0dl$$
+$$ = 0+ \int_{0}^{2} l\cdot \frac{l}{2}dl + 0 = \int_{0}^{2} \frac{l^{2}}{2}dl = \frac{l^{3}}{6} = \frac{8}{6}$$
+
+
+
+# 2. The Warranty is Worth It
+Suppose the life span of a particular (shoddy) server is a continuous random variable, T, with a uniform probability distribution between 0 and 1 year. The server comes with a contract that guarantees you money if the server lasts less than 1 year. In particular, if the server lasts t years, the manufacturer will pay you $g(t)$ = \$100$(1-t)^\frac{1}{2}$. Let $X = g(T)$ be the random variable representing the payout from the contract.
+
+(a) Compute the expected payout from the contract, E(X ) = E(g(T )), using the expression for the expectation of a function of a random variable.
+$$ E(X) = E(g(T)) = \int g(t)f(t) dt  =  \int 100 (1 - t) \frac{1}{2} dt$$
+
+Let v = 1 - t and dv = -dt. Then $$ E(X) = \int -100 v^{\frac{1}{2}}dv 
+=  \left.-\frac{200}{3} (1-t) ^{\frac{3}{2}}\right|_{t=0}^{t=1} = \frac{200}{3} = \$66.67 $$ 
+<!--
+(b) Next, compute E[X] another way, by first characterizing the random variable X. Follow these steps:
+i. First, suppose that you are given a specific value for the payoff, X = x, where $ 0 $\leq$ x $\leq$ \$100. What is the value for T that results in this payoff?
+
+$$x = 100 (1-t)^{\frac{1}{2}}$$
+$${\frac{x}{100}}^2 = 1-t $$
+$$t = 1 - ({\frac{x}{100}})^2 $$
+
+ii. Next, suppose that all you know is that the payoff is less than or equal to some value, X $\leq$ x, where again  $ 0 $\leq$ x $\leq$ \$100. What does this tell you about the life span of the server? Specifically, write down the condition for that is equivalent X $\leq$ x.
+
+As t decreases, x increases for all values of $X \leq x$, $T \geq t$. Probability that X $\leq$ x is the probability that T $\geq$ t so T $\geq$ 1-$({\frac{x}{100}})^2$ where $0 $\leq$ x $\leq$ $100.
+
+
+iii. Using the condition you just wrote down, what is the probability that X $\leq$ x? Write down a complete expression for the cumulative probability function of X.
+
+F(X) = 1 - (1-$({\frac{x}{100}})^2$) = $({\frac{x}{100}})^2$
+
+
+iv. Take a derivative to compute the probability density function for X.
+
+The probability density function $p(X=x) = F'(x) = ({\frac{2x}{100^2  }})$ where $0 $\leq$ x $\leq$ $100.
+
+
+v. Use the pdf of X to compute E[X]. If you did everything right, your
+answer should match what you got in part (a).
+
+$$E[X] = \int_{0}^{100} x({\frac{2x}{10000}}) = \int_{0}^{100} \frac{2x^2}{10000} = \$66.67$$
+-->
+
+# 3. (Lecture)\#Fail
+
+Suppose the length of Paul Laskowski's lecture in minutes is a continuous random variable C, with pmf $f(t) = e^{-t}$ for $t > 0$.  This is an example of an exponential random variable, and it has some special properties.  For example, suppose you have already sat through t minutes of the lecture, and are interested in whether the lecture is about to end immediately.  In statistics, this can be represented by something called the \textit{hazard rate}:
+
+$$h(t) = \frac{f(t)}{1-F(t)}$$
+
+To understand the hazard rate, think of the numerator as the probability the lecture ends between time $t$ and time $t+ dt$.  The denominator is just the probability the lecture does not end before time $t$.  So you can think of the fraction as the conditional probability that the lecture ends between $t$ and $t + dt$ given that it did not end before $t$.
+
+Compute the hazard rate for C.
+
+*Solution:*
+
+The interpretation of the denominator means that $F(t)$ is the CDF for $f(t)$, so:
+
+$$F(t) = \int_{-\infty}^t f(t) dt = \int_{-\infty}^0 f(t) dt + \int_0^t f(t) dt=0 + \int_0^t e^{-t} dt= -e^{-t}|^t_0 = (-e^{-t}) - (-1) = 1-e^{-t}$$
+Plugging this into the hazard rate formula, we get $h(t) = \frac{e^{-t}}{1-(1-e^{-t})} = \frac{e^{-t}}{e^{-t}} = 1$, for $t>0$.
+
+For the given p.m.f., this hazard rate is constant with respect to time:
+
+$$h(C) = 1$$.
+
+# 4. Optional Advanced Exercise: Characterizing a Function of a Random Variable
+
+Let $X$ be a continuous random variable with probability density function $f(x)$, and let $h$ be an invertible function where $h^{-1}$ is differentiable.  Recall that $Y = h(X)$ is itself a continuous random variable.  Prove that the probability density function of $Y$ is 
+
+$$g(y) =f(h^{-1}(y)) \cdot \left| \frac{d}{dy}h^{-1}(y) \right| $$
+*Solution:*
+
+Let us define the CDF of $f(x)$ to be $F(x)=P(X\leq x)$, and the CDF of $g(y)$ to be $G(y) = P(Y\leq y)$.  Applying the function $h$, we get: $G(y) = P(h(X)\leq y)$.  At this point, the inverse of $h$ can be applied to show the relationship between $F(x)$ and $G(x)$; however, this depends on whether $h^{-1}$ is an increasing or decreasing function.
+
+Assuming $h^{-1}$ is an increasing function:
+$$G(y) = P(h(X)\leq y) = P(X\leq h^{-1}(y)) = F(h^{-1}(y))$$
+
+Now we take the derivative of each side with respect to $y$:
+$$\frac{d}{dy}(G(y)) = \frac{d}{dy}(F(h^{-1}(y)))$$
+$$g(y) = f(h^{-1}(y))\frac{d}{dy}(h^{-1}(y))$$
+
+Note that $\frac{d}{dy}(h^{-1}(y))$ is positive since we have assumed that $h^{-1}$ is an increasing function.
+
+Now, the same exercise can be repeated under the assumption that $h^{-1}$ is a decreasing function:
+
+$$G(y) = P(h(X)\leq y) = P(X\geq h^{-1}(y)) = 1 - F(h^{-1}(y))$$
+
+Now we take the derivative of each side with respect to $y$:
+$$\frac{d}{dy}(G(y)) = \frac{d}{dy}(1-F(h^{-1}(y)))$$
+$$g(y) = -f(h^{-1}(y))\frac{d}{dy}(h^{-1}(y))$$
+
+Note that in this case, $\frac{d}{dy}(h^{-1}(y))$ is now negative since we have assumed that $h^{-1}$ is a decreasing function, and $g(y)$ is still positive.
+
+Since in either case $g(y)$ is positive, the p.d.f. of $Y$ can be simplified to:
+$$g(y) =f(h^{-1}(y)) \cdot \left| \frac{d}{dy}h^{-1}(y) \right|$$
